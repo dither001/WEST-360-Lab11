@@ -1,6 +1,7 @@
 
 class ray {
     // add your code here:
+
     constructor(a, b) {
         this.a = a;
         this.b = b;
