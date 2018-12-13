@@ -7,6 +7,7 @@ var program;
 // point array and color array
 var pointsArray = [];
 var colorsArray = [];
+
 var world = [];
 
 window.onload = function init() {
@@ -84,10 +85,13 @@ function colors(r, world){
     var t_max = Number.MAX_VALUE;
 
     for (var i = 0; i < world.length; ++i) {
-        // if (world[i])
+        if (world(i).hit(r, 0.0, t_max, rec)) {
+            hit_anything = true;
+            t_max = rec.getT(); // not sure about this
+        }
     }
 
-    if (world[0].hit(r, rec)){
+    if (hit_anything){
         var n = rec.getNormal();
         return scale(0.5, vec3(n[0]+1, n[1]+1, n[2]+1)); //
     }
