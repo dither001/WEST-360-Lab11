@@ -53,8 +53,8 @@ window.onload = function init() {
 function main() {
     var nx = 500;
     var ny = 500;
-    world.push(new sphere(vec3(0,0,-1), 0.5, new diffuse(vec3(0.4,0.2,0.1))));
-    world.push(new sphere(vec3(0,-100.5,-2), 0.6, new diffuse(vec3(1.0,1.0,0.0))));
+    world.push(new sphere(vec3(0, 0, -1), 0.5, new diffuse(vec3(0.4, 0.2, 0.1))));
+    world.push(new sphere(vec3(0, -100.5, -2), 100, new diffuse(vec3(1.0, 1.0, 0.0))));
     // Your code goes here:
 
     var bottomLeft = vec3(-1,-1,-1); // vec3
@@ -90,21 +90,20 @@ function colors(r, world, depth){
 
             var next_ray = rec.getMaterial().get_next_ray(rec);
             if (depth < 50) {
-                // var m = new diffuse(rec.getMaterial());
-                return mult(rec.getMaterial().get_attenuation(), colors(next_ray, world, depth+1));
+                var m = rec.getMaterial().get_attenuation();
+                var n = colors(next_ray, world, depth+1);
+                // return vec3(dot(m[0],n[0]), dot(m[1],n[1]), dot(m[2],n[2]));
+                return mult(m, n);
             } else {
                 return vec3(0.0, 0.0, 0.0);
             }
         }
-
-        if (hit_anything == false) {
-            let t = 0.5 * (r.direction()[1] + 1.0);
-            return mix(vec3(1.0, 1.0, 1.0), vec3(0.5, 0.7, 1.0), t);        
-        }
     }
 
-
-
+    if (hit_anything == false) {
+        let t = 0.5 * (r.direction()[1] + 1.0);
+        return mix(vec3(1.0, 1.0, 1.0), vec3(0.5, 0.7, 1.0), t);        
+    }
 }
 
 var render = function() {
