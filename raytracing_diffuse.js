@@ -90,8 +90,8 @@ function colors(r, world, depth){
 
             var next_ray = rec.getMaterial().get_next_ray(rec);
             if (depth < 50) {
-                var temp = rec.getMaterial().getAttenuation();
-                return mult(temp, colors(next_ray, world, depth+1));
+                // var m = new diffuse(rec.getMaterial());
+                return mult(rec.getMaterial().get_attenuation(), colors(next_ray, world, depth+1));
             } else {
                 return vec3(0.0, 0.0, 0.0);
             }
