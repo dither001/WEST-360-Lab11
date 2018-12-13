@@ -17,8 +17,8 @@ class diffuse{
     get_attenuation() { return this.attenuation; }; 
 
     get_next_ray(rec){
-        var target = add(rec.p, add(rec.normal, random_in_unit_sphere()))
-        var r = new ray(rec.p, subtract(target, rec.p))
+        var target = add(rec.getP(), add(rec.normal, random_in_unit_sphere()))
+        var r = new ray(rec.getP(), subtract(target, rec.getP()))
         return r
     }
 }

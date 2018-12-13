@@ -72,7 +72,7 @@ function main() {
             let d = r.direction();
             let c = colors(r, world);
 
-            pointsArray.push(vec2(-1*d[0], -1*d[1]));
+            pointsArray.push(vec2(d[0], d[1]));
             colorsArray.push(c);
         }
     }

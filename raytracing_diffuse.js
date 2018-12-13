@@ -8,6 +8,8 @@ var program;
 var pointsArray = [];
 var colorsArray = [];
 
+var world = [];
+
 window.onload = function init() {
 
     canvas = document.getElementById( "gl-canvas" );
@@ -51,18 +53,55 @@ window.onload = function init() {
 function main() {
     var nx = 500;
     var ny = 500;
+    world.push(new sphere(vec3(0,0,-1), 0.5, new diffuse(vec3(0.4,0.2,0.1))));
+    world.push(new sphere(vec3(0,-100.5,-2), 0.6, new diffuse(vec3(1.0,1.0,0.0))));
+    // Your code goes here:
 
-   // add your code here:
-   
+    var bottomLeft = vec3(-1,-1,-1); // vec3
+    var horizontal = vec3(4,0,0);
+    var vertical = vec3(0,2,0);
+    var origin = vec3(0,0,0);
 
+    for (var j = (ny - 1); j >= 0; j--) {
+        for (var i = 0; i < nx; i++) {
+            let u = (i/nx);
+            let v = (j/ny);
 
+            let r = new ray(origin, add(bottomLeft, add(scale(u, horizontal), scale(v, vertical))));
+            let d = r.direction();
+            let c = colors(r, world, 0);
 
-   
-
+            pointsArray.push(vec2(d[0], d[1]));
+            colorsArray.push(c);
+        }
+    }
 }
 
 function colors(r, world, depth){
     // add your code here:
+    var rec = new hit_record();
+    var hit_anything = false;
+    var t_max = Number.MAX_VALUE;
+
+    for (var i = 0; i < world.length; ++i) {
+        if (world[i].hit(r, 0.0, t_max, rec)) {
+            hit_anything = true;
+            t_max = rec.getT(); // not sure about this
+
+            var next_ray = rec.getMaterial().get_next_ray(rec);
+            if (depth < 50) {
+                var temp = rec.getMaterial().getAttenuation();
+                return mult(temp, colors(next_ray, world, depth+1));
+            } else {
+                return vec3(0.0, 0.0, 0.0);
+            }
+        }
+
+        if (hit_anything == false) {
+            let t = 0.5 * (r.direction()[1] + 1.0);
+            return mix(vec3(1.0, 1.0, 1.0), vec3(0.5, 0.7, 1.0), t);        
+        }
+    }
 
 
 

@@ -4,9 +4,10 @@ class sphere{
     // in hit(r, rec):
     //      return false if discriminant is less than 0
     //      otherwise, update rec and then return true 
-    constructor(center, radius) {
+    constructor(center, radius, material) {
         this.center = center;
         this.radius = radius;
+        this.material = material;
     }
 
     hit(r, t_min, t_max, rec) {
@@ -26,6 +27,7 @@ class sphere{
                 // rec.setP(r.pointAt(rec.getT()));
                 rec.setP(r.pointAt(temp));
                 rec.setNormal(normalize(subtract(rec.getP(), this.center)));  // normalize
+                rec.setMaterial(this.material);
 
                 return true;
             }
@@ -36,6 +38,7 @@ class sphere{
                 // rec.setP(r.pointAt(rec.getT()));
                 rec.setP(r.pointAt(temp));
                 rec.setNormal(normalize(subtract(rec.getP(), this.center)));
+                rec.setMaterial(this.material);
 
                 return true;
             }    

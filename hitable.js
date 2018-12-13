@@ -27,4 +27,12 @@ class hit_record {
         this.normal = normal;
     }
 
+    getMaterial() {
+        return this.material;
+    }
+
+    setMaterial(material) {
+        this.material = material;
+    }
+
 }
