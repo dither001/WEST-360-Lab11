@@ -7,6 +7,7 @@ var program;
 // point array and color array
 var pointsArray = [];
 var colorsArray = [];
+var world = [];
 
 window.onload = function init() {
 
@@ -51,21 +52,48 @@ window.onload = function init() {
 function main() {
     var nx = 500;
     var ny = 500;
+    world.push(new sphere(vec3(0,0,-1), 0.5));
+    world.push(new sphere(vec3(0,-100.5,-1), 100));
+    world.push(new sphere(vec3(0.5,0,-1.6), 0.6));
+    // Your code goes here:
 
-   // add your code here:
+    var bottomLeft = vec3(-1,-1,-1); // vec3
+    var horizontal = vec3(4,0,0);
+    var vertical = vec3(0,2,0);
+    var origin = vec3(0,0,0);
 
-   
+    for (var j = (ny - 1); j >= 0; j--) {
+        for (var i = 0; i < nx; i++) {
+            let u = (i/nx);
+            let v = (j/ny);
 
+            let r = new ray(origin, add(bottomLeft, add(scale(u, horizontal), scale(v, vertical))));
+            let d = r.direction();
+            let c = colors(r, world[0]);
 
-
+            pointsArray.push(vec2(-1*d[0], -1*d[1]));
+            colorsArray.push(c);
+        }
+    }
 }
 
 function colors(r, world){
-    // add your code here:
+    var rec = new hit_record();
+    // Your code goes here:
+    var hit_anything = false;
+    var t_max = Number.MAX_VALUE;
 
+    for (var i = 0; i < world.length; ++i) {
+        // if (world[i])
+    }
 
-    
+    if (world[0].hit(r, rec)){
+        var n = rec.getNormal();
+        return scale(0.5, vec3(n[0]+1, n[1]+1, n[2]+1)); //
+    }
 
+    let t = 0.5 * (r.direction()[1] + 1.0);
+    return mix(vec3(1.0, 1.0, 1.0), vec3(0.5, 0.7, 1.0), t);
 }
 
 var render = function() {
