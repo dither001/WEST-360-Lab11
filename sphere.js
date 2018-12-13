@@ -1,34 +1,47 @@
 
 class sphere{
-    // add your code here:
-
+    // Your code goes here:
+    // in hit(r, rec):
+    //      return false if discriminant is less than 0
+    //      otherwise, update rec and then return true 
     constructor(center, radius) {
         this.center = center;
         this.radius = radius;
     }
 
-    hit(r, rec) {
-        // vectors
+    hit(r, t_min, t_max, rec) {
         var oc = subtract(r.origin(), this.center);
         var d = r.direction();
-
-        // scalars
+    
         var a = dot(d, d);
         var b = dot(oc, d);
         var c = dot(oc, oc) - this.radius*this.radius;
         var discriminant = b*b - a*c;
-
-        if (discriminant < this.radius*0.2) {
+    
+        if(discriminant >= 0) {
             var temp = -1 * b - Math.sqrt(discriminant) / a;
+    
+            if (temp < t_max && temp > t_min) {
+                // rec.setT(temp);
+                // rec.setP(r.pointAt(rec.getT()));
+                rec.setP(r.pointAt(temp));
+                rec.setNormal(normalize(subtract(rec.getP(), this.center)));  // normalize
 
-            rec.setT(temp);
-            rec.setP(r.pointAt(rec.getT()));
-            rec.setNormal(subtract(rec.getP(), this.center));
+                return true;
+            }
 
-            return true;
+            temp = -1 * b + Math.sqrt(discriminant) / a;
+            if (temp < t_max && temp > t_min) {
+                // rec.setT(temp);
+                // rec.setP(r.pointAt(rec.getT()));
+                rec.setP(r.pointAt(temp));
+                rec.setNormal(normalize(subtract(rec.getP(), this.center)));
+
+                return true;
+            }    
         }
-
+    
         return false;
     }
-
+    
 }

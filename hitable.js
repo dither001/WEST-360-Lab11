@@ -26,8 +26,5 @@ class hit_record {
     setNormal(normal) {
         this.normal = normal;
     }
+
 }
-
-
-
-
